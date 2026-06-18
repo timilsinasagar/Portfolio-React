@@ -164,8 +164,16 @@ html.light {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 60% 70% at 65% 50%, rgba(201, 168, 76, 0.055) 0%, transparent 65%),
-    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201, 168, 76, 0.03) 0%, transparent 60%);
+    radial-gradient(
+      ellipse 60% 70% at 65% 50%,
+      rgba(201, 168, 76, 0.055) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 40% 40% at 20% 80%,
+      rgba(201, 168, 76, 0.03) 0%,
+      transparent 60%
+    );
 }
 
 /* Fine line grid */
@@ -177,7 +185,11 @@ html.light {
     linear-gradient(rgba(201, 168, 76, 0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(201, 168, 76, 0.04) 1px, transparent 1px);
   background-size: 72px 72px;
-  mask-image: radial-gradient(ellipse 70% 70% at center, black 20%, transparent 100%);
+  mask-image: radial-gradient(
+    ellipse 70% 70% at center,
+    black 20%,
+    transparent 100%
+  );
 }
 
 /* Big ghost initial */
@@ -481,3 +493,1165 @@ html.light {
     gap: 1.6rem;
   }
 }
+/* ============================================================
+   ABOUT — ink & gold editorial theme
+   Append to the bottom of global.css (same file Hero's CSS
+   lives in). No separate import needed in About.jsx.
+
+   Note: this section's original CSS chunk included
+   .experience-pill / .exp-num / .exp-lbl again, but those
+   aren't used anywhere in the About markup — they're the same
+   stats-strip rules already defined above for Hero. Skipped
+   here to avoid a duplicate/conflicting definition; the Hero
+   block has been updated with the correct values instead.
+   ============================================================ */
+
+#about {
+  background: var(--deep);
+}
+
+/* Bio paragraphs */
+.about-text {
+  font-size: 0.85rem;
+  line-height: 2;
+  color: rgba(200, 184, 150, 0.62);
+}
+
+/* ── Skill bars ─────────────────────────────────────────── */
+.skill-bar-wrap {
+  margin-bottom: 1rem;
+}
+
+.skill-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--sand);
+  margin-bottom: 0.4rem;
+}
+
+.skill-track {
+  height: 2px;
+  background: rgba(201, 168, 76, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-pale));
+  width: 0;
+  transition: width 1.4s var(--ease);
+}
+
+/* ── Tags ───────────────────────────────────────────────── */
+.about-tag {
+  display: inline-block;
+  border: 1px solid var(--border);
+  color: var(--sand);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  padding: 0.3rem 0.8rem;
+  margin: 0.2rem;
+}
+
+/* ── Info panels (Vision / Mission / Values / Quick Facts) ─ */
+.about-panel {
+  border: 1px solid var(--border);
+  padding: 1.6rem 1.8rem;
+  background: var(--warm);
+}
+
+.about-panel-sm {
+  padding: 1.4rem 1.5rem;
+  height: 100%;
+}
+
+.about-panel-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.7rem;
+}
+
+.about-panel-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.05rem;
+  color: var(--cream);
+}
+
+.about-panel-title-sm {
+  font-size: 0.95rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.about-panel-text {
+  font-size: 0.8rem;
+  line-height: 1.85;
+  color: rgba(200, 184, 150, 0.55);
+  margin: 0;
+}
+
+.about-panel-text-sm {
+  font-size: 0.77rem;
+  line-height: 1.8;
+  color: rgba(200, 184, 150, 0.5);
+  margin: 0;
+}
+
+/* ── Quick facts ────────────────────────────────────────── */
+.quick-facts-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1rem;
+  color: var(--cream);
+  margin-bottom: 1.1rem;
+}
+
+.quick-facts-row {
+  font-size: 0.78rem;
+}
+
+.quick-facts-label {
+  color: rgba(200, 184, 150, 0.4);
+  letter-spacing: 0.06em;
+}
+
+.quick-facts-value {
+  color: var(--cream);
+}
+
+.quick-facts-value.gold {
+  color: var(--gold);
+}
+/* ============================================================
+   HERO — ink & gold editorial theme
+   Import directly inside Hero.jsx:  import "./Hero.css";
+
+   Uses the design-token CSS variables already defined on :root
+   in your global stylesheet (--ink, --gold, --cream, --sand,
+   --border, --ease) — nothing new to register there.
+
+   Note: the original markup's button class was ".btn-ink", which
+   collides with the reusable ".btn-ink" component class already
+   defined in your global CSS (@layer components). To avoid one
+   silently overriding the other, the hero's CTA button below is
+   scoped as ".hero-btn-ink" instead. Everything else keeps its
+   original name.
+   ============================================================ */
+
+/* Radial atmospheric glow */
+.hero-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 60% 70% at 65% 50%,
+      rgba(201, 168, 76, 0.055) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 40% 40% at 20% 80%,
+      rgba(201, 168, 76, 0.03) 0%,
+      transparent 60%
+    );
+}
+
+/* Fine line grid */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(201, 168, 76, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201, 168, 76, 0.04) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(
+    ellipse 70% 70% at center,
+    black 20%,
+    transparent 100%
+  );
+}
+
+/* Big ghost initial */
+.hero-ghost {
+  position: absolute;
+  right: -2%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: "Playfair Display", serif;
+  font-size: clamp(10rem, 22vw, 18rem);
+  font-style: italic;
+  color: rgba(201, 168, 76, 0.035);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Profile image ──────────────────────────────────────── */
+.hero-photo-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.hero-photo-wrap img {
+  width: clamp(220px, 28vw, 340px);
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  filter: grayscale(25%) contrast(1.08) sepia(8%);
+  position: relative;
+  z-index: 1;
+}
+
+.hero-photo-frame {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: -16px;
+  bottom: -16px;
+  border: 1px solid var(--border);
+  z-index: 0;
+}
+
+.hero-photo-corner {
+  position: absolute;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  border-color: var(--gold);
+  border-style: solid;
+  border-width: 0;
+}
+
+.hero-photo-corner.tl {
+  top: -5px;
+  left: -5px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+
+.hero-photo-corner.br {
+  bottom: -5px;
+  right: -5px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+}
+
+/* ── Text block ─────────────────────────────────────────── */
+.hero-sup {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+
+.hero-sup-line {
+  width: 36px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.hero-sup-txt {
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.9;
+}
+
+.hero-name {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+  font-weight: 400;
+  color: var(--cream);
+  line-height: 1.05;
+  margin-bottom: 0.4rem;
+}
+
+.hero-name em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+/* Typing role — falls back to Playfair Display italic since
+   Libre Baskerville isn't in your current @import. Add
+   "Libre+Baskerville:ital@1&" to the Google Fonts import line
+   in global.css if you want the original serif body face. */
+.hero-role {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1rem, 2.2vw, 1.4rem);
+  color: var(--sand);
+  font-style: italic;
+  margin-bottom: 1.8rem;
+  min-height: 2rem;
+}
+
+.hero-typed-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: var(--gold);
+  vertical-align: middle;
+  animation: heroCursorBlink 1s step-end infinite;
+}
+
+@keyframes heroCursorBlink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.hero-bio {
+  font-size: 0.88rem;
+  line-height: 2;
+  color: rgba(200, 184, 150, 0.6);
+  max-width: 440px;
+  margin-bottom: 2.5rem;
+}
+
+/* ── CTA buttons ────────────────────────────────────────── */
+.hero-btn-ink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--gold);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  padding: 0.9rem 2.2rem;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: color 0.4s;
+}
+
+.hero-btn-ink::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease);
+}
+
+.hero-btn-ink:hover::before {
+  transform: scaleX(1);
+}
+
+.hero-btn-ink:hover {
+  color: var(--ink);
+}
+
+.hero-btn-ink > * {
+  position: relative;
+  z-index: 1;
+}
+
+.btn-ghost-ink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  border: 1px solid rgba(200, 184, 150, 0.2);
+  background: transparent;
+  color: rgba(200, 184, 150, 0.55);
+  font-size: 0.68rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 0.9rem 2rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.35s;
+}
+
+.btn-ghost-ink:hover {
+  border-color: rgba(200, 184, 150, 0.5);
+  color: var(--cream);
+}
+
+/* ── Experience stats strip ─────────────────────────────── */
+.experience-pill {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1.8rem;
+  margin-top: 1.8rem;
+}
+
+.exp-num {
+  font-family: "Playfair Display", serif;
+  font-size: 2.6rem;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.exp-plus {
+  font-size: 1.4rem;
+}
+
+.exp-lbl {
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(200, 184, 150, 0.45);
+  margin-top: 0.3rem;
+}
+
+/* ── Scroll cue ─────────────────────────────────────────── */
+.scroll-cue {
+  position: absolute;
+  bottom: 2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  opacity: 0.5;
+  animation: heroFadeUp 1s ease 2s both;
+}
+
+.scroll-cue span {
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  color: var(--sand);
+  text-transform: uppercase;
+}
+
+.scroll-cue-track {
+  width: 1px;
+  height: 44px;
+  background: rgba(201, 168, 76, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-cue-fill {
+  position: absolute;
+  top: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--gold);
+  animation: heroScrollDrop 2.2s ease-in-out infinite;
+}
+
+@keyframes heroScrollDrop {
+  0% {
+    top: -100%;
+  }
+
+  100% {
+    top: 100%;
+  }
+}
+
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(12px);
+  }
+
+  to {
+    opacity: 0.5;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ── Responsive tweaks ──────────────────────────────────── */
+@media (max-width: 991px) {
+  .hero-bio {
+    max-width: 100%;
+  }
+}
+
+/* ============================================================
+   RESUME / TIMELINE — ink & gold editorial theme
+   Append to the bottom of global.css.
+   ============================================================ */
+
+#resume {
+  background: var(--parchment);
+}
+
+/* Centered eyebrow variant (flanking lines, no ::before pseudo —
+   avoids tripling up with the default .eyebrow line) */
+.eyebrow-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  color: var(--gold);
+  font-size: 0.65rem;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.eyebrow-line {
+  width: 32px;
+  height: 1px;
+  background: var(--gold);
+  display: block;
+}
+
+/* Shared heading style for Education / Experience / Certifications */
+.timeline-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: "Playfair Display", serif;
+  font-size: 1.1rem;
+  color: var(--gold);
+}
+
+/* ── Timeline ───────────────────────────────────────────── */
+.timeline {
+  position: relative;
+  padding-left: 2.2rem;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: var(--border);
+}
+
+.tl-item {
+  position: relative;
+  margin-bottom: 2.8rem;
+}
+
+.tl-item::before {
+  content: "";
+  position: absolute;
+  left: -2.5rem;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid var(--gold);
+}
+
+.tl-year {
+  font-size: 0.62rem;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.tl-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.1rem;
+  color: var(--cream);
+  margin-bottom: 0.25rem;
+}
+
+.tl-place {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--sand);
+  font-style: italic;
+  margin-bottom: 0.6rem;
+}
+
+.tl-desc {
+  font-size: 0.8rem;
+  line-height: 1.9;
+  color: rgba(200, 184, 150, 0.5);
+}
+
+/* ── Certification badges ──────────────────────────────── */
+.cert-badge {
+  border: 1px solid var(--border);
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: border-color 0.3s;
+}
+
+.cert-badge:hover {
+  border-color: rgba(201, 168, 76, 0.5);
+}
+
+.cert-icon {
+  color: var(--gold);
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  display: flex;
+}
+
+.cert-name {
+  font-size: 0.82rem;
+  color: var(--cream);
+}
+
+.cert-org {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--sand);
+  opacity: 0.7;
+}
+/* ============================================================
+   SERVICES — ink & gold editorial theme
+   Append to the bottom of global.css.
+
+   Note: the centered eyebrow header here reuses .eyebrow-center
+   / .eyebrow-line from the Resume section CSS — not redefined.
+   ============================================================ */
+
+#services {
+  background: var(--deep);
+}
+
+.svc-card {
+  background: var(--warm);
+  border: 1px solid var(--border);
+  padding: 2.5rem 2rem;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color 0.4s,
+    transform 0.4s;
+}
+
+.svc-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease);
+}
+
+.svc-card:hover {
+  border-color: rgba(201, 168, 76, 0.45);
+  transform: translateY(-5px);
+}
+
+.svc-card:hover::after {
+  transform: scaleX(1);
+}
+
+.svc-num {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  color: rgba(201, 168, 76, 0.08);
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.svc-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  margin-bottom: 1.4rem;
+  transition:
+    background 0.3s,
+    border-color 0.3s,
+    color 0.3s;
+}
+
+.svc-card:hover .svc-icon-wrap {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
+}
+
+.svc-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.15rem;
+  color: var(--cream);
+  margin-bottom: 0.7rem;
+}
+
+.svc-desc {
+  font-size: 0.78rem;
+  line-height: 1.9;
+  color: rgba(200, 184, 150, 0.5);
+}
+
+.svc-tags {
+  margin-top: 1.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.svc-tag {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  color: var(--sand);
+  padding: 0.2rem 0.6rem;
+}
+/* ============================================================
+   PROJECTS / PORTFOLIO — ink & gold editorial theme
+   Append to the bottom of global.css.
+   ============================================================ */
+
+#portfolio {
+  background: var(--parchment);
+}
+
+.proj-filter {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.8rem;
+}
+
+.pf-btn {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: rgba(200, 184, 150, 0.5);
+  padding: 0.45rem 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.pf-btn.on,
+.pf-btn:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+.proj-card {
+  background: var(--warm);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.4s;
+}
+
+.proj-card:hover {
+  border-color: rgba(201, 168, 76, 0.45);
+}
+
+.proj-img-wrap {
+  overflow: hidden;
+  position: relative;
+}
+
+.proj-img-wrap img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  filter: grayscale(25%) sepia(10%);
+  transition:
+    transform 0.7s var(--ease),
+    filter 0.5s;
+}
+
+.proj-card:hover .proj-img-wrap img {
+  transform: scale(1.07);
+  filter: grayscale(0) sepia(0);
+}
+
+.proj-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(14, 12, 10, 0.92) 0%,
+    rgba(201, 168, 76, 0.08) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.proj-card:hover .proj-overlay {
+  opacity: 1;
+}
+
+.proj-overlay-cat {
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+}
+
+.proj-overlay-name {
+  font-family: "Playfair Display", serif;
+  font-size: 1.1rem;
+  color: var(--cream);
+}
+
+.proj-links {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transform: translateX(60px);
+  transition: transform 0.35s;
+}
+
+.proj-card:hover .proj-links {
+  transform: translateX(0);
+}
+
+.proj-link-btn {
+  width: 36px;
+  height: 36px;
+  background: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.proj-link-btn:hover {
+  background: var(--gold-pale);
+  color: var(--ink);
+}
+
+.proj-meta {
+  padding: 1.2rem 1.4rem;
+  border-top: 1px solid var(--border);
+}
+
+.proj-name {
+  font-family: "Playfair Display", serif;
+  font-size: 1rem;
+  color: var(--cream);
+  margin-bottom: 0.3rem;
+}
+
+.proj-stack {
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+/* Featured */
+.proj-featured .proj-img-wrap img {
+  aspect-ratio: 21 / 9;
+}
+/* ============================================================
+   TESTIMONIALS — ink & gold editorial theme
+   Append to the bottom of global.css.
+   ============================================================ */
+
+#testimonials {
+  background: var(--deep);
+}
+
+/* Scroll-snap carousel track — new addition to support the
+   Prev/Next buttons; not present in the original static CSS */
+.testi-track {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.testi-track::-webkit-scrollbar {
+  display: none;
+}
+
+.testi-slide {
+  scroll-snap-align: start;
+}
+
+.testi-card {
+  background: var(--warm);
+  border: 1px solid var(--border);
+  padding: 2.2rem;
+  position: relative;
+  height: 100%;
+}
+
+.testi-card::before {
+  content: "\201C";
+  font-family: "Playfair Display", serif;
+  font-size: 6rem;
+  line-height: 0.6;
+  color: rgba(201, 168, 76, 0.07);
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+}
+
+.testi-stars {
+  color: var(--gold);
+  font-size: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.testi-text {
+  font-family: "Libre Baskerville", serif;
+  font-size: 0.95rem;
+  font-style: italic;
+  line-height: 1.85;
+  color: var(--cream);
+  margin-bottom: 1.8rem;
+}
+
+.testi-author {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.testi-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gold);
+  filter: grayscale(30%);
+}
+
+.testi-name {
+  font-size: 0.8rem;
+  color: var(--cream);
+}
+
+.testi-role {
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+}
+
+.testi-nav {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 2rem;
+}
+
+.testi-btn {
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--gold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.testi-btn:hover {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
+}
+/* ============================================================
+   CONTACT — ink & gold editorial theme
+   Append to the bottom of global.css.
+
+   Note: the centered eyebrow header reuses .eyebrow-center /
+   .eyebrow-line from the Resume section CSS. Social icon links
+   reuse .footer-social, assumed already defined alongside your
+   Footer component.
+   ============================================================ */
+
+#contact {
+  background: var(--parchment);
+}
+
+.contact-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.8rem;
+}
+
+.ci-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+}
+
+.ci-lbl {
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(200, 184, 150, 0.4);
+  margin-bottom: 0.2rem;
+}
+
+.ci-val {
+  font-size: 0.84rem;
+  color: var(--cream);
+}
+
+/* form-control / form-select are dropped here since they were
+   Bootstrap base classes — .form-field now carries full styling
+   on its own, including width, since there's no Bootstrap
+   .form-control to supply display:block/width:100% anymore */
+.form-field {
+  display: block;
+  width: 100%;
+  background: var(--warm) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--cream) !important;
+  border-radius: 0 !important;
+  padding: 0.85rem 1.1rem;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.82rem;
+  transition: border-color 0.3s !important;
+}
+
+.form-field:focus {
+  border-color: var(--gold) !important;
+  box-shadow: none !important;
+  background: var(--warm) !important;
+  outline: none;
+}
+
+.form-field::placeholder {
+  color: rgba(200, 184, 150, 0.28);
+}
+
+.form-field option {
+  background: var(--warm);
+}
+
+.form-lbl {
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(200, 184, 150, 0.45);
+  margin-bottom: 0.45rem;
+  display: block;
+}
+
+.map-frame {
+  width: 100%;
+  height: 240px;
+  border: 1px solid var(--border);
+  filter: invert(88%) hue-rotate(180deg) saturate(0.4);
+}
+/* ============================================================
+   FOOTER — ink & gold editorial theme
+   Append to the bottom of global.css.
+
+   Note: .footer-social defined here is the real definition —
+   it was used (and assumed) in the Contact section already;
+   no change needed there, the class name already matches.
+   ============================================================ */
+
+footer {
+  background: var(--ink);
+  border-top: 1px solid var(--border);
+  padding: 64px 0 28px;
+}
+
+.footer-logo-img {
+  height: 48px;
+  object-fit: contain;
+}
+
+.footer-desc {
+  font-size: 0.78rem;
+  line-height: 1.95;
+  color: rgba(200, 184, 150, 0.38);
+  max-width: 260px;
+  margin-top: 1rem;
+}
+
+.footer-hd {
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.3rem;
+}
+
+.footer-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(200, 184, 150, 0.42);
+  font-size: 0.78rem;
+  text-decoration: none;
+  margin-bottom: 0.65rem;
+  transition:
+    color 0.3s,
+    padding-left 0.3s;
+}
+
+.footer-link:hover {
+  color: var(--gold);
+  padding-left: 0.5rem;
+}
+
+.footer-social {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(200, 184, 150, 0.45);
+  text-decoration: none;
+  margin-right: 0.4rem;
+  transition: all 0.3s;
+}
+
+.footer-social:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+.footer-bottom {
+  margin-top: 3.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  font-size: 0.67rem;
+  color: rgba(200, 184, 150, 0.28);
+  letter-spacing: 0.06em;
+}
+
+

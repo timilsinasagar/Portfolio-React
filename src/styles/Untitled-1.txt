@@ -20,25 +20,24 @@
  * --------------------------------------------
  */
 
-import { useState } from "react";
+import { useState } from 'react';
 
 // Theme hook
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from '@/hooks/useTheme';
 
 // Global UI Components
-import Cursor from "@/components/ui/Cursor";
-import Loader from "@/components/ui/Loader";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "./components/layout/Footer";
+import Cursor from '@/components/ui/Cursor';
+import Loader from '@/components/ui/Loader';
+import Navbar from '@/components/layout/Navbar';
 
 // Website Sections
-import Hero from "@/components/sections/Hero";
-import About from "@/components/sections/About";
-import Resume from "@/components/sections/Resume";
-import Services from "@/components/sections/Services";
-import Portfolio from "@/components/sections/Portfolio";
-import Testimonials from "@/components/sections/Testimonials";
-import Contact from "@/components/sections/Contact";
+import Hero from '@/components/sections/Hero';
+// import About from '@/components/sections/About';
+// import Resume from '@/components/sections/Resume';
+// import Services from '@/components/sections/Services';
+// import Portfolio from '@/components/sections/Portfolio';
+// import Testimonials from '@/components/sections/Testimonials';
+// import Contact from '@/components/sections/Contact';
 
 export default function App() {
   /**
@@ -69,7 +68,12 @@ export default function App() {
           Intro Loader
           Shows once when application starts
          ===================================== */}
-      {!loaded && <Loader duration={2200} onComplete={() => setLoaded(true)} />}
+      {!loaded && (
+        <Loader
+          duration={2200}
+          onComplete={() => setLoaded(true)}
+        />
+      )}
 
       {/* =====================================
           Main Website Content
@@ -78,14 +82,17 @@ export default function App() {
       <div
         className="relative z-10"
         style={{
-          visibility: loaded ? "visible" : "hidden",
+          visibility: loaded ? 'visible' : 'hidden',
         }}
       >
         {/* =================================
             Navigation Bar
             Receives theme information
            ================================= */}
-        <Navbar isDark={isDark} onToggle={toggleTheme} />
+        <Navbar
+          isDark={isDark}
+          onToggle={toggleTheme}
+        />
 
         {/* =================================
             Main Website Sections
@@ -96,25 +103,23 @@ export default function App() {
           <Hero />
 
           {/* About Me Section */}
-          <About />
+          {/* <About /> */}
 
           {/* Resume / Education / Experience */}
-          <Resume />
+          {/* <Resume /> */}
 
           {/* Services Offered */}
-          <Services />
+          {/* <Services /> */}
 
           {/* Projects / Portfolio Showcase */}
-          <Portfolio />
+          {/* <Portfolio /> */}
 
           {/* Client Reviews / Testimonials */}
-          <Testimonials />
+          {/* <Testimonials /> */}
 
           {/* Contact Form & Information */}
-          <Contact />
+          {/* <Contact /> */}
         </main>
-
-        <Footer />
       </div>
     </>
   );
