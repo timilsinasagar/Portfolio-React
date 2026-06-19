@@ -23,10 +23,11 @@ import heroImage from "../../assets/images/heroImage.png";
  */
 const roles = [
   "Senior Full Stack Developer",
-  "Laravel & PHP Specialist",
-  "MERN Stack Enthusiast",
-  "REST API Architect",
-  "Freelance Web Developer",
+  "Project Manager",
+  "Laravel & PHP Developer",
+  "MERN Stack Developer",
+  "REST API Developer",
+  "Electrical Technician",
 ];
 
 /**
@@ -35,7 +36,7 @@ const roles = [
 const stats = [
   { num: "3", label: "Years Experience" },
   { num: "40", label: "Projects Completed" },
-  { num: "25", label: "Happy Clients" },
+  { num: "30", label: "Happy Clients" },
 ];
 
 export default function Hero() {
@@ -67,7 +68,7 @@ export default function Hero() {
       {/* =========================================================
           MAIN CONTENT CONTAINER
           ========================================================= */}
-      <div className="container mx-auto max-w-7xl px-4 relative z-10 py-20">
+      <div className="container mx-auto max-w-7xl  relative z-10 py-20">
         <div className="grid lg:grid-cols-12 items-center gap-10 min-h-screen">
           {/* =====================================================
               LEFT SIDE — TEXT CONTENT
@@ -77,7 +78,7 @@ export default function Hero() {
             <div className="hero-sup hero-anim ha1">
               <span className="hero-sup-line" />
               <span className="hero-sup-txt">
-                Full Stack Web Developer · Laravel · Pokhara, Nepal
+                Software Engineer · Full Stack Developer · Pokhara, Nepal
               </span>
             </div>
 
@@ -89,17 +90,18 @@ export default function Hero() {
             </h1>
 
             {/* Typing animation role */}
-            <div className="hero-role hero-anim ha3">
+            <div className="hero-role hero-anim ha3 mt-3">
               <span>{typed}</span>
               <span className="hero-typed-cursor" />
             </div>
 
             {/* Short bio */}
             <p className="hero-bio hero-anim ha4">
-              A passionate full-stack web developer crafting elegant, performant
-              web applications with PHP, Laravel, and modern frontend
-              technologies. I turn complex problems into clean, user-centric
-              digital experiences.
+              I design, develop, and deploy modern web applications that are
+              fast, secure, and scalable. With expertise in Laravel, PHP, React,
+              REST APIs, and Linux server administration, I help businesses
+              transform ideas into impactful digital solutions while ensuring
+              performance, reliability, and user satisfaction.
             </p>
 
             {/* CTA buttons */}

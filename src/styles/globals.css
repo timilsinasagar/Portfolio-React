@@ -1,46 +1,142 @@
-/* ============================================================
-   GLOBAL STYLES  —  portfolio-react
-   All design-token CSS variables live here so Tailwind
-   arbitrary-value classes can reference them anywhere.
-   ============================================================ */
-
 /* ── Google Fonts ─────────────────────────────────────────── */
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Libre+Baskerville:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap");
 
 /* ── Tailwind layers ──────────────────────────────────────── */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ── Root tokens (dark theme — default) ────────────────────── */
+/* ── Root tokens (DARK theme — default) ─────────────────────
+   Every token below is the dark-mode value. html.light further
+   down overrides the same variable names. Read top to bottom:
+   raw hues first, then semantic surface/text/structure tokens
+   built from them. */
 :root {
+  /* raw hues — used directly only where the literal "ink" or
+     "gold" hue is the point (gradients, ghost letterforms),
+     never for general surfaces/text (those use semantic tokens
+     below so theme-switching always works) */
   --ink: #0e0c0a;
   --deep: #141210;
   --parchment: #1c1915;
   --warm: #252118;
+
+  /* accent family — gold keeps the same hue across themes,
+     only its paired backgrounds/opacities change */
   --sand: #c8b896;
   --gold: #c9a84c;
   --gold-pale: #e2cc96;
   --cream: #f0e8d8;
-  --muted: rgba(200, 184, 150, 0.45);
-  --border: rgba(201, 168, 76, 0.18);
-  --tx: rgba(200, 184, 150, 0.72);
   --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
-  /* Light-mode palette (activated via .light class on <html>) */
+  /* ── semantic surfaces (dark) ──
+     page < deep < parchment < warm < card, each a step lighter,
+     used to create the section-to-section banding down the page */
   --bg-page: var(--ink);
+  --bg-ink: var(--ink);
+  --bg-deep: var(--deep);
+  --bg-parchment: var(--parchment);
+  --bg-warm: var(--warm);
   --bg-card: var(--parchment);
-  --text-main: var(--tx);
+
+  /* ── semantic text (dark) ──
+     four steps from "near white heading" down to "true micro
+     label". --text-faint was the source of the dark-mode
+     visibility bug — raised from 0.28 to 0.4 so faint labels
+     (quick-facts labels, footer copyright line) stay legible
+     while still reading as visually quieter than --text-muted */
+  --text-main: rgba(200, 184, 150, 0.72);
+  --text-heading: var(--cream);
+  --text-body: rgba(200, 184, 150, 0.6);
+  --text-muted: rgba(200, 184, 150, 0.45);
+  --text-faint: rgba(200, 184, 150, 0.4);
+
+  /* ── structure ── */
+  --border: rgba(201, 168, 76, 0.18);
+  --border-strong: rgba(201, 168, 76, 0.45);
+
+  /* dedicated fill for small dots/markers that sit on top of a
+     section background (timeline dot, etc.) — needs to be
+     visibly lighter than the surface behind it, which a plain
+     --bg-page reference cannot guarantee section-to-section */
+  --dot-fill: var(--deep);
+
+  /* dedicated low-contrast track fill for skill bars / scroll
+     cue — previously hardcoded rgba(201,168,76,*) inline in
+     two different places with two different alpha values; now
+     one token so both stay visible and stay consistent */
+  --track-fill: rgba(201, 168, 76, 0.16);
+
+  /* ── effects ── */
+  --overlay-scrim: rgba(14, 12, 10, 0.92);
+  --img-filter: grayscale(25%) contrast(1.08) sepia(8%);
+  --img-filter-hover: grayscale(0) sepia(0);
+  --noise-opacity: 0.032;
+  --map-filter: invert(88%) hue-rotate(180deg) saturate(0.4);
+  --shadow-color: rgba(201, 168, 76, 0.16);
+
+  --nav-bg: rgba(14, 12, 10, 0.94);
+  --nav-bg-mobile: rgba(14, 12, 10, 0.97);
 }
 
 /* ── Light mode overrides ─────────────────────────────────── */
 html.light {
-  --bg-page: #f8f6f0;
-  --bg-card: #ffffff;
-  --text-main: #2a2418;
-  --tx: rgba(42, 36, 24, 0.82);
-  --border: rgba(180, 140, 60, 0.22);
-  --muted: rgba(42, 36, 24, 0.38);
+  /* surfaces — layered warm parchment instead of a flat white.
+     Each step is a distinct, slightly different warm-white so
+     section bands (#about, #resume, #services...) still read
+     as separate zones the way they do in dark mode, rather
+     than collapsing into one undifferentiated white page. */
+  --bg-page: #faf7f0;
+  --bg-ink: #faf7f0;
+  --bg-deep: #f3ede0;
+  --bg-parchment: #fffdf9;
+  --bg-warm: #f7f1e4;
+  --bg-card: #fffdf9;
+
+  /* text — ink-on-parchment. --text-faint raised to a usable
+     0.5 opacity (was effectively unreadable at lower values on
+     light backgrounds too, same root cause as dark mode) */
+  --text-main: rgba(42, 36, 24, 0.84);
+  --text-heading: #211c12;
+  --text-body: rgba(42, 36, 24, 0.7);
+  --text-muted: rgba(42, 36, 24, 0.5);
+  --text-faint: rgba(42, 36, 24, 0.5);
+
+  /* borders strengthened vs. the old light overrides — hairline
+     gold borders at low alpha nearly vanished on bright white;
+     bumped up so dividers and card edges stay visible */
+  --border: rgba(160, 120, 40, 0.28);
+  --border-strong: rgba(160, 120, 40, 0.6);
+
+  /* timeline dot needs to be visibly different from the
+     parchment surface behind it — a soft warm tint works better
+     here than pure white, which would look like a punched hole */
+  --dot-fill: #f3ede0;
+
+  /* track fill deepened slightly vs. dark mode's value so the
+     unfilled portion of skill bars / scroll cue stays visible
+     against bright parchment */
+  --track-fill: rgba(160, 120, 40, 0.16);
+
+  /* gold accent deepened (not just lower-alpha-on-white) so it
+     keeps presence instead of washing out — same hue family,
+     shifted toward amber/umber for legibility at small sizes */
+  --gold: #a9762a;
+  --gold-pale: #c98f3a;
+
+  /* effects — warm umber shadow instead of generic grey gives
+     cards real lift on a light page; noise and image filters
+     dialed back since heavy grain/sepia reads as "dirty" on
+     bright surfaces rather than "vintage" */
+  --overlay-scrim: rgba(250, 247, 240, 0.95);
+  --img-filter: grayscale(10%) contrast(1.03) sepia(3%);
+  --img-filter-hover: grayscale(0) sepia(0);
+  --noise-opacity: 0.018;
+  --map-filter: none;
+  --shadow-color: rgba(120, 85, 30, 0.18);
+
+  --nav-bg: rgba(250, 247, 240, 0.94);
+  --nav-bg-mobile: rgba(255, 253, 249, 0.97);
 }
 
 /* ── Base resets ──────────────────────────────────────────── */
@@ -62,7 +158,7 @@ html.light {
     font-weight: 300;
     overflow-x: hidden;
     /* custom cursor — turned off on touch devices via JS */
-    cursor: none;
+    /* cursor: none; */
     transition:
       background 0.4s,
       color 0.4s;
@@ -75,7 +171,9 @@ html.light {
     }
   }
 
-  /* Global noise overlay */
+  /* Global noise overlay — texture only, never affects contrast
+     of actual content since it sits behind everything (z-index 0,
+     pointer-events: none) */
   body::before {
     content: "";
     position: fixed;
@@ -83,7 +181,8 @@ html.light {
     pointer-events: none;
     z-index: 0;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    opacity: 0.032;
+    opacity: var(--noise-opacity);
+    transition: opacity 0.4s;
   }
 }
 
@@ -101,7 +200,8 @@ html.light {
   /* Display heading */
   .display-title {
     font-family: "Playfair Display", serif;
-    @apply font-normal text-cream leading-[1.12];
+    @apply font-normal leading-[1.12];
+    color: var(--text-heading);
   }
 
   /* Gold divider rules */
@@ -122,40 +222,38 @@ html.light {
 
   /* Primary ink button */
   .btn-ink {
-    @apply inline-flex items-center gap-2
-           border border-[var(--border)]
-           text-gold text-[0.62rem] tracking-[0.2em] uppercase
-           px-6 py-3
-           transition-all duration-300
-           hover:bg-gold hover:text-ink hover:border-gold
-           relative overflow-hidden;
+    @apply inline-flex items-center gap-2 border text-gold text-[0.62rem] tracking-[0.2em] uppercase px-6 py-3 transition-all duration-300 hover:bg-gold hover:text-ink hover:border-gold relative overflow-hidden;
+    border-color: var(--border);
   }
 
   /* Section padding */
   .section-pad {
-    @apply py-[110px];
+    @apply py-[50px];
   }
 
-  /* Card base */
+  /* Card base — shadow now uses the theme's --shadow-color,
+     which carries a warm umber tint in light mode rather than
+     reading as a generic grey drop shadow */
   .card-neo {
-    @apply bg-[var(--bg-card)] border border-[var(--border)] p-6
-           transition-shadow duration-300 hover:shadow-gold-md;
+    @apply p-6 transition-shadow duration-300;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+  }
+  .card-neo:hover {
+    box-shadow: 0 12px 32px -8px var(--shadow-color);
   }
 }
+
 /* ============================================================
    HERO — ink & gold editorial theme
    Import directly inside Hero.jsx:  import "./Hero.css";
 
-   Uses the design-token CSS variables already defined on :root
-   in your global stylesheet (--ink, --gold, --cream, --sand,
-   --border, --ease) — nothing new to register there.
-
    Note: the original markup's button class was ".btn-ink", which
    collides with the reusable ".btn-ink" component class already
-   defined in your global CSS (@layer components). To avoid one
-   silently overriding the other, the hero's CTA button below is
-   scoped as ".hero-btn-ink" instead. Everything else keeps its
-   original name.
+   defined above (@layer components). To avoid one silently
+   overriding the other, the hero's CTA button is scoped as
+   ".hero-btn-ink" instead. Everything else keeps its original
+   name.
    ============================================================ */
 
 /* Radial atmospheric glow */
@@ -217,9 +315,10 @@ html.light {
   width: clamp(220px, 28vw, 340px);
   aspect-ratio: 3 / 4;
   object-fit: cover;
-  filter: grayscale(25%) contrast(1.08) sepia(8%);
+  filter: var(--img-filter);
   position: relative;
   z-index: 1;
+  transition: filter 0.4s;
 }
 
 .hero-photo-frame {
@@ -282,7 +381,7 @@ html.light {
   font-family: "Playfair Display", serif;
   font-size: clamp(2.8rem, 6.5vw, 5.5rem);
   font-weight: 400;
-  color: var(--cream);
+  color: var(--text-heading);
   line-height: 1.05;
   margin-bottom: 0.4rem;
 }
@@ -292,12 +391,8 @@ html.light {
   color: var(--gold);
 }
 
-/* Typing role — falls back to Playfair Display italic since
-   Libre Baskerville isn't in your current @import. Add
-   "Libre+Baskerville:ital@1&" to the Google Fonts import line
-   in global.css if you want the original serif body face. */
 .hero-role {
-  font-family: "Playfair Display", serif;
+  font-family: "Libre Baskerville", "Playfair Display", serif;
   font-size: clamp(1rem, 2.2vw, 1.4rem);
   color: var(--sand);
   font-style: italic;
@@ -323,7 +418,7 @@ html.light {
 .hero-bio {
   font-size: 0.88rem;
   line-height: 2;
-  color: rgba(200, 184, 150, 0.6);
+  color: var(--text-body);
   max-width: 440px;
   margin-bottom: 2.5rem;
 }
@@ -362,8 +457,11 @@ html.light {
   transform: scaleX(1);
 }
 
+/* hover text color flips to the page background so the gold
+   fill behind it (above) still gives readable contrast in both
+   themes, since --bg-ink is theme-aware */
 .hero-btn-ink:hover {
-  color: var(--ink);
+  color: var(--bg-ink);
 }
 
 .hero-btn-ink > * {
@@ -375,9 +473,9 @@ html.light {
   display: inline-flex;
   align-items: center;
   gap: 0.7rem;
-  border: 1px solid rgba(200, 184, 150, 0.2);
+  border: 1px solid var(--border);
   background: transparent;
-  color: rgba(200, 184, 150, 0.55);
+  color: var(--text-muted);
   font-size: 0.68rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
@@ -388,8 +486,60 @@ html.light {
 }
 
 .btn-ghost-ink:hover {
-  border-color: rgba(200, 184, 150, 0.5);
-  color: var(--cream);
+  border-color: var(--border-strong);
+  color: var(--text-heading);
+}
+
+/* ── Hero photo entrance + float animation ─────────────── */
+.hero-photo-wrap {
+  animation: heroPhotoIn 1s var(--ease) 0.3s both,
+             heroPhotoFloat 6s ease-in-out 1.3s infinite;
+}
+
+.hero-photo-wrap img {
+  transition: transform 0.6s var(--ease), filter 0.4s;
+}
+
+.hero-photo-wrap:hover img {
+  transform: scale(1.04) rotate(-1deg);
+  filter: var(--img-filter-hover);
+}
+
+.hero-photo-frame {
+  transition: transform 0.6s var(--ease);
+}
+
+.hero-photo-wrap:hover .hero-photo-frame {
+  transform: translate(4px, 4px);
+}
+
+.hero-photo-corner {
+  transition: width 0.4s var(--ease), height 0.4s var(--ease);
+}
+
+.hero-photo-wrap:hover .hero-photo-corner {
+  width: 36px;
+  height: 36px;
+}
+
+@keyframes heroPhotoIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes heroPhotoFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 /* ── Experience stats strip ─────────────────────────────── */
@@ -444,10 +594,13 @@ html.light {
   text-transform: uppercase;
 }
 
+/* was hardcoded rgba(201,168,76,0.25) — now uses the shared
+   --track-fill token so it stays visible and theme-consistent
+   with the skill bar track below */
 .scroll-cue-track {
   width: 1px;
   height: 44px;
-  background: rgba(201, 168, 76, 0.25);
+  background: var(--track-fill);
   position: relative;
   overflow: hidden;
 }
@@ -493,28 +646,20 @@ html.light {
     gap: 1.6rem;
   }
 }
+
 /* ============================================================
    ABOUT — ink & gold editorial theme
-   Append to the bottom of global.css (same file Hero's CSS
-   lives in). No separate import needed in About.jsx.
-
-   Note: this section's original CSS chunk included
-   .experience-pill / .exp-num / .exp-lbl again, but those
-   aren't used anywhere in the About markup — they're the same
-   stats-strip rules already defined above for Hero. Skipped
-   here to avoid a duplicate/conflicting definition; the Hero
-   block has been updated with the correct values instead.
    ============================================================ */
 
 #about {
-  background: var(--deep);
+  background: var(--bg-deep);
 }
 
 /* Bio paragraphs */
 .about-text {
   font-size: 0.85rem;
   line-height: 2;
-  color: rgba(200, 184, 150, 0.62);
+  color: var(--text-body);
 }
 
 /* ── Skill bars ─────────────────────────────────────────── */
@@ -531,9 +676,13 @@ html.light {
   margin-bottom: 0.4rem;
 }
 
+/* was hardcoded rgba(201,168,76,0.12) — far too faint to read
+   as an unfilled track against --bg-deep in dark mode. Now uses
+   --track-fill, the same shared token as the scroll cue, tuned
+   to a visible level in both themes */
 .skill-track {
   height: 2px;
-  background: rgba(201, 168, 76, 0.12);
+  background: var(--track-fill);
   position: relative;
   overflow: hidden;
 }
@@ -560,7 +709,7 @@ html.light {
 .about-panel {
   border: 1px solid var(--border);
   padding: 1.6rem 1.8rem;
-  background: var(--warm);
+  background: var(--bg-warm);
 }
 
 .about-panel-sm {
@@ -578,7 +727,7 @@ html.light {
 .about-panel-title {
   font-family: "Playfair Display", serif;
   font-size: 1.05rem;
-  color: var(--cream);
+  color: var(--text-heading);
 }
 
 .about-panel-title-sm {
@@ -590,14 +739,14 @@ html.light {
 .about-panel-text {
   font-size: 0.8rem;
   line-height: 1.85;
-  color: rgba(200, 184, 150, 0.55);
+  color: var(--text-body);
   margin: 0;
 }
 
 .about-panel-text-sm {
   font-size: 0.77rem;
   line-height: 1.8;
-  color: rgba(200, 184, 150, 0.5);
+  color: var(--text-body);
   margin: 0;
 }
 
@@ -605,7 +754,7 @@ html.light {
 .quick-facts-title {
   font-family: "Playfair Display", serif;
   font-size: 1rem;
-  color: var(--cream);
+  color: var(--text-heading);
   margin-bottom: 1.1rem;
 }
 
@@ -613,372 +762,28 @@ html.light {
   font-size: 0.78rem;
 }
 
+/* was on the old low-contrast --text-faint (0.28 alpha) — now
+   rides the corrected --text-faint (0.4 dark / 0.5 light) so
+   labels like "Location" / "Email" stay legible */
 .quick-facts-label {
-  color: rgba(200, 184, 150, 0.4);
+  color: var(--text-faint);
   letter-spacing: 0.06em;
 }
 
 .quick-facts-value {
-  color: var(--cream);
+  color: var(--text-heading);
 }
 
 .quick-facts-value.gold {
   color: var(--gold);
 }
-/* ============================================================
-   HERO — ink & gold editorial theme
-   Import directly inside Hero.jsx:  import "./Hero.css";
-
-   Uses the design-token CSS variables already defined on :root
-   in your global stylesheet (--ink, --gold, --cream, --sand,
-   --border, --ease) — nothing new to register there.
-
-   Note: the original markup's button class was ".btn-ink", which
-   collides with the reusable ".btn-ink" component class already
-   defined in your global CSS (@layer components). To avoid one
-   silently overriding the other, the hero's CTA button below is
-   scoped as ".hero-btn-ink" instead. Everything else keeps its
-   original name.
-   ============================================================ */
-
-/* Radial atmospheric glow */
-.hero-glow {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(
-      ellipse 60% 70% at 65% 50%,
-      rgba(201, 168, 76, 0.055) 0%,
-      transparent 65%
-    ),
-    radial-gradient(
-      ellipse 40% 40% at 20% 80%,
-      rgba(201, 168, 76, 0.03) 0%,
-      transparent 60%
-    );
-}
-
-/* Fine line grid */
-.hero-grid {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(201, 168, 76, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(201, 168, 76, 0.04) 1px, transparent 1px);
-  background-size: 72px 72px;
-  mask-image: radial-gradient(
-    ellipse 70% 70% at center,
-    black 20%,
-    transparent 100%
-  );
-}
-
-/* Big ghost initial */
-.hero-ghost {
-  position: absolute;
-  right: -2%;
-  top: 50%;
-  transform: translateY(-50%);
-  font-family: "Playfair Display", serif;
-  font-size: clamp(10rem, 22vw, 18rem);
-  font-style: italic;
-  color: rgba(201, 168, 76, 0.035);
-  line-height: 1;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* ── Profile image ──────────────────────────────────────── */
-.hero-photo-wrap {
-  position: relative;
-  display: inline-block;
-}
-
-.hero-photo-wrap img {
-  width: clamp(220px, 28vw, 340px);
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
-  filter: grayscale(25%) contrast(1.08) sepia(8%);
-  position: relative;
-  z-index: 1;
-}
-
-.hero-photo-frame {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  right: -16px;
-  bottom: -16px;
-  border: 1px solid var(--border);
-  z-index: 0;
-}
-
-.hero-photo-corner {
-  position: absolute;
-  z-index: 2;
-  width: 28px;
-  height: 28px;
-  border-color: var(--gold);
-  border-style: solid;
-  border-width: 0;
-}
-
-.hero-photo-corner.tl {
-  top: -5px;
-  left: -5px;
-  border-top-width: 2px;
-  border-left-width: 2px;
-}
-
-.hero-photo-corner.br {
-  bottom: -5px;
-  right: -5px;
-  border-bottom-width: 2px;
-  border-right-width: 2px;
-}
-
-/* ── Text block ─────────────────────────────────────────── */
-.hero-sup {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  margin-bottom: 1.2rem;
-}
-
-.hero-sup-line {
-  width: 36px;
-  height: 1px;
-  background: var(--gold);
-}
-
-.hero-sup-txt {
-  font-size: 0.65rem;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
-  color: var(--gold);
-  opacity: 0.9;
-}
-
-.hero-name {
-  font-family: "Playfair Display", serif;
-  font-size: clamp(2.8rem, 6.5vw, 5.5rem);
-  font-weight: 400;
-  color: var(--cream);
-  line-height: 1.05;
-  margin-bottom: 0.4rem;
-}
-
-.hero-name em {
-  font-style: italic;
-  color: var(--gold);
-}
-
-/* Typing role — falls back to Playfair Display italic since
-   Libre Baskerville isn't in your current @import. Add
-   "Libre+Baskerville:ital@1&" to the Google Fonts import line
-   in global.css if you want the original serif body face. */
-.hero-role {
-  font-family: "Playfair Display", serif;
-  font-size: clamp(1rem, 2.2vw, 1.4rem);
-  color: var(--sand);
-  font-style: italic;
-  margin-bottom: 1.8rem;
-  min-height: 2rem;
-}
-
-.hero-typed-cursor {
-  display: inline-block;
-  width: 2px;
-  height: 1.1em;
-  background: var(--gold);
-  vertical-align: middle;
-  animation: heroCursorBlink 1s step-end infinite;
-}
-
-@keyframes heroCursorBlink {
-  50% {
-    opacity: 0;
-  }
-}
-
-.hero-bio {
-  font-size: 0.88rem;
-  line-height: 2;
-  color: rgba(200, 184, 150, 0.6);
-  max-width: 440px;
-  margin-bottom: 2.5rem;
-}
-
-/* ── CTA buttons ────────────────────────────────────────── */
-.hero-btn-ink {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.7rem;
-  border: 1px solid var(--gold);
-  background: transparent;
-  color: var(--gold);
-  font-family: "DM Sans", sans-serif;
-  font-size: 0.68rem;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  padding: 0.9rem 2.2rem;
-  text-decoration: none;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  transition: color 0.4s;
-}
-
-.hero-btn-ink::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--gold);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s var(--ease);
-}
-
-.hero-btn-ink:hover::before {
-  transform: scaleX(1);
-}
-
-.hero-btn-ink:hover {
-  color: var(--ink);
-}
-
-.hero-btn-ink > * {
-  position: relative;
-  z-index: 1;
-}
-
-.btn-ghost-ink {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.7rem;
-  border: 1px solid rgba(200, 184, 150, 0.2);
-  background: transparent;
-  color: rgba(200, 184, 150, 0.55);
-  font-size: 0.68rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  padding: 0.9rem 2rem;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.35s;
-}
-
-.btn-ghost-ink:hover {
-  border-color: rgba(200, 184, 150, 0.5);
-  color: var(--cream);
-}
-
-/* ── Experience stats strip ─────────────────────────────── */
-.experience-pill {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  border-top: 1px solid var(--border);
-  padding-top: 1.8rem;
-  margin-top: 1.8rem;
-}
-
-.exp-num {
-  font-family: "Playfair Display", serif;
-  font-size: 2.6rem;
-  color: var(--gold);
-  line-height: 1;
-}
-
-.exp-plus {
-  font-size: 1.4rem;
-}
-
-.exp-lbl {
-  font-size: 0.68rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: rgba(200, 184, 150, 0.45);
-  margin-top: 0.3rem;
-}
-
-/* ── Scroll cue ─────────────────────────────────────────── */
-.scroll-cue {
-  position: absolute;
-  bottom: 2.2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  text-decoration: none;
-  opacity: 0.5;
-  animation: heroFadeUp 1s ease 2s both;
-}
-
-.scroll-cue span {
-  font-size: 0.58rem;
-  letter-spacing: 0.3em;
-  color: var(--sand);
-  text-transform: uppercase;
-}
-
-.scroll-cue-track {
-  width: 1px;
-  height: 44px;
-  background: rgba(201, 168, 76, 0.25);
-  position: relative;
-  overflow: hidden;
-}
-
-.scroll-cue-fill {
-  position: absolute;
-  top: -100%;
-  width: 100%;
-  height: 100%;
-  background: var(--gold);
-  animation: heroScrollDrop 2.2s ease-in-out infinite;
-}
-
-@keyframes heroScrollDrop {
-  0% {
-    top: -100%;
-  }
-
-  100% {
-    top: 100%;
-  }
-}
-
-@keyframes heroFadeUp {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(12px);
-  }
-
-  to {
-    opacity: 0.5;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-
-/* ── Responsive tweaks ──────────────────────────────────── */
-@media (max-width: 991px) {
-  .hero-bio {
-    max-width: 100%;
-  }
-}
 
 /* ============================================================
    RESUME / TIMELINE — ink & gold editorial theme
-   Append to the bottom of global.css.
    ============================================================ */
 
 #resume {
-  background: var(--parchment);
+  background: var(--bg-parchment);
 }
 
 /* Centered eyebrow variant (flanking lines, no ::before pseudo —
@@ -1033,6 +838,14 @@ html.light {
   margin-bottom: 2.8rem;
 }
 
+/* THE MAIN DARK-MODE BUG: this dot was filled with --bg-page,
+   which in dark mode is the near-black --ink (#0e0c0a) sitting
+   on #resume's --bg-parchment (#1c1915) — two near-identical
+   near-black tones, so the "punched hole" center of the dot
+   was indistinguishable from the section background and the
+   dot read as a faint gold ring with no visible fill. Now uses
+   the dedicated --dot-fill token, which is tuned a visible step
+   lighter than the surrounding surface in both themes. */
 .tl-item::before {
   content: "";
   position: absolute;
@@ -1041,7 +854,7 @@ html.light {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--ink);
+  background: var(--dot-fill);
   border: 2px solid var(--gold);
 }
 
@@ -1056,7 +869,7 @@ html.light {
 .tl-title {
   font-family: "Playfair Display", serif;
   font-size: 1.1rem;
-  color: var(--cream);
+  color: var(--text-heading);
   margin-bottom: 0.25rem;
 }
 
@@ -1071,7 +884,7 @@ html.light {
 .tl-desc {
   font-size: 0.8rem;
   line-height: 1.9;
-  color: rgba(200, 184, 150, 0.5);
+  color: var(--text-body);
 }
 
 /* ── Certification badges ──────────────────────────────── */
@@ -1085,7 +898,7 @@ html.light {
 }
 
 .cert-badge:hover {
-  border-color: rgba(201, 168, 76, 0.5);
+  border-color: var(--border-strong);
 }
 
 .cert-icon {
@@ -1097,7 +910,7 @@ html.light {
 
 .cert-name {
   font-size: 0.82rem;
-  color: var(--cream);
+  color: var(--text-heading);
 }
 
 .cert-org {
@@ -1106,20 +919,20 @@ html.light {
   color: var(--sand);
   opacity: 0.7;
 }
+
 /* ============================================================
    SERVICES — ink & gold editorial theme
-   Append to the bottom of global.css.
 
    Note: the centered eyebrow header here reuses .eyebrow-center
    / .eyebrow-line from the Resume section CSS — not redefined.
    ============================================================ */
 
 #services {
-  background: var(--deep);
+  background: var(--bg-deep);
 }
 
 .svc-card {
-  background: var(--warm);
+  background: var(--bg-warm);
   border: 1px solid var(--border);
   padding: 2.5rem 2rem;
   height: 100%;
@@ -1144,7 +957,7 @@ html.light {
 }
 
 .svc-card:hover {
-  border-color: rgba(201, 168, 76, 0.45);
+  border-color: var(--border-strong);
   transform: translateY(-5px);
 }
 
@@ -1152,12 +965,19 @@ html.light {
   transform: scaleX(1);
 }
 
+/* large background numeral — deliberately very low contrast as
+   a watermark, not body text, so it's exempt from the text
+   contrast fixes above; each theme gets its own faint tint */
 .svc-num {
   font-family: "Playfair Display", serif;
   font-size: 3rem;
   color: rgba(201, 168, 76, 0.08);
   line-height: 1;
   margin-bottom: 1rem;
+}
+
+html.light .svc-num {
+  color: rgba(160, 120, 40, 0.12);
 }
 
 .svc-icon-wrap {
@@ -1177,21 +997,21 @@ html.light {
 
 .svc-card:hover .svc-icon-wrap {
   background: var(--gold);
-  color: var(--ink);
+  color: var(--bg-ink);
   border-color: var(--gold);
 }
 
 .svc-title {
   font-family: "Playfair Display", serif;
   font-size: 1.15rem;
-  color: var(--cream);
+  color: var(--text-heading);
   margin-bottom: 0.7rem;
 }
 
 .svc-desc {
   font-size: 0.78rem;
   line-height: 1.9;
-  color: rgba(200, 184, 150, 0.5);
+  color: var(--text-body);
 }
 
 .svc-tags {
@@ -1201,20 +1021,23 @@ html.light {
   gap: 0.4rem;
 }
 
+/* border was hardcoded rgba(201,168,76,0.2) — inconsistent with
+   every other border in the file and too faint on --bg-warm in
+   dark mode. Now uses var(--border) like everything else. */
 .svc-tag {
   font-size: 0.6rem;
   letter-spacing: 0.15em;
-  border: 1px solid rgba(201, 168, 76, 0.2);
+  border: 1px solid var(--border);
   color: var(--sand);
   padding: 0.2rem 0.6rem;
 }
+
 /* ============================================================
    PROJECTS / PORTFOLIO — ink & gold editorial theme
-   Append to the bottom of global.css.
    ============================================================ */
 
 #portfolio {
-  background: var(--parchment);
+  background: var(--bg-parchment);
 }
 
 .proj-filter {
@@ -1230,7 +1053,7 @@ html.light {
   text-transform: uppercase;
   border: 1px solid var(--border);
   background: transparent;
-  color: rgba(200, 184, 150, 0.5);
+  color: var(--text-muted);
   padding: 0.45rem 1.2rem;
   cursor: pointer;
   transition: all 0.3s;
@@ -1240,11 +1063,11 @@ html.light {
 .pf-btn:hover {
   background: var(--gold);
   border-color: var(--gold);
-  color: var(--ink);
+  color: var(--bg-ink);
 }
 
 .proj-card {
-  background: var(--warm);
+  background: var(--bg-warm);
   border: 1px solid var(--border);
   position: relative;
   overflow: hidden;
@@ -1252,7 +1075,7 @@ html.light {
 }
 
 .proj-card:hover {
-  border-color: rgba(201, 168, 76, 0.45);
+  border-color: var(--border-strong);
 }
 
 .proj-img-wrap {
@@ -1264,7 +1087,7 @@ html.light {
   width: 100%;
   aspect-ratio: 16 / 10;
   object-fit: cover;
-  filter: grayscale(25%) sepia(10%);
+  filter: var(--img-filter);
   transition:
     transform 0.7s var(--ease),
     filter 0.5s;
@@ -1272,7 +1095,7 @@ html.light {
 
 .proj-card:hover .proj-img-wrap img {
   transform: scale(1.07);
-  filter: grayscale(0) sepia(0);
+  filter: var(--img-filter-hover);
 }
 
 .proj-overlay {
@@ -1280,7 +1103,7 @@ html.light {
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(14, 12, 10, 0.92) 0%,
+    var(--overlay-scrim) 0%,
     rgba(201, 168, 76, 0.08) 100%
   );
   display: flex;
@@ -1306,7 +1129,7 @@ html.light {
 .proj-overlay-name {
   font-family: "Playfair Display", serif;
   font-size: 1.1rem;
-  color: var(--cream);
+  color: var(--text-heading);
 }
 
 .proj-links {
@@ -1331,14 +1154,14 @@ html.light {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--ink);
+  color: var(--bg-ink);
   text-decoration: none;
   transition: background 0.2s;
 }
 
 .proj-link-btn:hover {
   background: var(--gold-pale);
-  color: var(--ink);
+  color: var(--bg-ink);
 }
 
 .proj-meta {
@@ -1349,7 +1172,7 @@ html.light {
 .proj-name {
   font-family: "Playfair Display", serif;
   font-size: 1rem;
-  color: var(--cream);
+  color: var(--text-heading);
   margin-bottom: 0.3rem;
 }
 
@@ -1364,17 +1187,16 @@ html.light {
 .proj-featured .proj-img-wrap img {
   aspect-ratio: 21 / 9;
 }
+
 /* ============================================================
    TESTIMONIALS — ink & gold editorial theme
-   Append to the bottom of global.css.
    ============================================================ */
 
 #testimonials {
-  background: var(--deep);
+  background: var(--bg-deep);
 }
 
-/* Scroll-snap carousel track — new addition to support the
-   Prev/Next buttons; not present in the original static CSS */
+/* Scroll-snap carousel track */
 .testi-track {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
@@ -1392,13 +1214,15 @@ html.light {
 }
 
 .testi-card {
-  background: var(--warm);
+  background: var(--bg-warm);
   border: 1px solid var(--border);
   padding: 2.2rem;
   position: relative;
   height: 100%;
 }
 
+/* decorative quotation mark watermark — intentionally very low
+   contrast, exempt from text-contrast fixes; tuned per theme */
 .testi-card::before {
   content: "\201C";
   font-family: "Playfair Display", serif;
@@ -1408,6 +1232,10 @@ html.light {
   position: absolute;
   top: 1.2rem;
   right: 1.2rem;
+}
+
+html.light .testi-card::before {
+  color: rgba(160, 120, 40, 0.12);
 }
 
 .testi-stars {
@@ -1421,7 +1249,7 @@ html.light {
   font-size: 0.95rem;
   font-style: italic;
   line-height: 1.85;
-  color: var(--cream);
+  color: var(--text-heading);
   margin-bottom: 1.8rem;
 }
 
@@ -1442,7 +1270,7 @@ html.light {
 
 .testi-name {
   font-size: 0.8rem;
-  color: var(--cream);
+  color: var(--text-heading);
 }
 
 .testi-role {
@@ -1472,21 +1300,20 @@ html.light {
 
 .testi-btn:hover {
   background: var(--gold);
-  color: var(--ink);
+  color: var(--bg-ink);
   border-color: var(--gold);
 }
+
 /* ============================================================
    CONTACT — ink & gold editorial theme
-   Append to the bottom of global.css.
 
    Note: the centered eyebrow header reuses .eyebrow-center /
    .eyebrow-line from the Resume section CSS. Social icon links
-   reuse .footer-social, assumed already defined alongside your
-   Footer component.
+   reuse .footer-social, defined in the Footer block below.
    ============================================================ */
 
 #contact {
-  background: var(--parchment);
+  background: var(--bg-parchment);
 }
 
 .contact-info-item {
@@ -1507,17 +1334,19 @@ html.light {
   color: var(--gold);
 }
 
+/* was on the old low-contrast --text-faint — now rides the
+   corrected token so contact-card labels stay legible */
 .ci-lbl {
   font-size: 0.6rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(200, 184, 150, 0.4);
+  color: var(--text-faint);
   margin-bottom: 0.2rem;
 }
 
 .ci-val {
   font-size: 0.84rem;
-  color: var(--cream);
+  color: var(--text-heading);
 }
 
 /* form-control / form-select are dropped here since they were
@@ -1527,36 +1356,40 @@ html.light {
 .form-field {
   display: block;
   width: 100%;
-  background: var(--warm) !important;
+  background: var(--bg-warm) !important;
   border: 1px solid var(--border) !important;
-  color: var(--cream) !important;
+  color: var(--text-heading) !important;
   border-radius: 0 !important;
   padding: 0.85rem 1.1rem;
   font-family: "DM Sans", sans-serif;
   font-size: 0.82rem;
-  transition: border-color 0.3s !important;
+  transition:
+    border-color 0.3s !important,
+    background 0.4s,
+    color 0.4s;
 }
 
 .form-field:focus {
   border-color: var(--gold) !important;
   box-shadow: none !important;
-  background: var(--warm) !important;
+  background: var(--bg-warm) !important;
   outline: none;
 }
 
 .form-field::placeholder {
-  color: rgba(200, 184, 150, 0.28);
+  color: var(--text-faint);
 }
 
 .form-field option {
-  background: var(--warm);
+  background: var(--bg-warm);
+  color: var(--text-heading);
 }
 
 .form-lbl {
   font-size: 0.62rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(200, 184, 150, 0.45);
+  color: var(--text-muted);
   margin-bottom: 0.45rem;
   display: block;
 }
@@ -1565,21 +1398,21 @@ html.light {
   width: 100%;
   height: 240px;
   border: 1px solid var(--border);
-  filter: invert(88%) hue-rotate(180deg) saturate(0.4);
+  filter: var(--map-filter);
 }
+
 /* ============================================================
    FOOTER — ink & gold editorial theme
-   Append to the bottom of global.css.
 
    Note: .footer-social defined here is the real definition —
-   it was used (and assumed) in the Contact section already;
-   no change needed there, the class name already matches.
+   it's reused by the Contact section's social links too.
    ============================================================ */
 
 footer {
-  background: var(--ink);
+  background: var(--bg-ink);
   border-top: 1px solid var(--border);
   padding: 64px 0 28px;
+  transition: background 0.4s;
 }
 
 .footer-logo-img {
@@ -1587,10 +1420,15 @@ footer {
   object-fit: contain;
 }
 
+/* this was on --text-faint, which made an entire descriptive
+   paragraph nearly unreadable in dark mode — paragraph-length
+   copy needs more contrast than a micro-label does, so this
+   now uses --text-muted instead; --text-faint is reserved for
+   true micro-labels (quick-facts labels, copyright line) */
 .footer-desc {
   font-size: 0.78rem;
   line-height: 1.95;
-  color: rgba(200, 184, 150, 0.38);
+  color: var(--text-muted);
   max-width: 260px;
   margin-top: 1rem;
 }
@@ -1607,7 +1445,7 @@ footer {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: rgba(200, 184, 150, 0.42);
+  color: var(--text-muted);
   font-size: 0.78rem;
   text-decoration: none;
   margin-bottom: 0.65rem;
@@ -1628,7 +1466,7 @@ footer {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: rgba(200, 184, 150, 0.45);
+  color: var(--text-muted);
   text-decoration: none;
   margin-right: 0.4rem;
   transition: all 0.3s;
@@ -1637,9 +1475,12 @@ footer {
 .footer-social:hover {
   background: var(--gold);
   border-color: var(--gold);
-  color: var(--ink);
+  color: var(--bg-ink);
 }
 
+/* was on --text-faint at the old 0.28 alpha — copyright line is
+   small but still needs to clear a baseline reading contrast;
+   now uses the corrected --text-faint token */
 .footer-bottom {
   margin-top: 3.5rem;
   padding-top: 1.2rem;
@@ -1650,8 +1491,6 @@ footer {
   flex-wrap: wrap;
   gap: 0.8rem;
   font-size: 0.67rem;
-  color: rgba(200, 184, 150, 0.28);
+  color: var(--text-faint);
   letter-spacing: 0.06em;
 }
-
-

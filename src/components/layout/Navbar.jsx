@@ -7,6 +7,8 @@
  * - Hamburger for mobile
  * - Theme toggle
  * - Framer Motion entrance animation
+ * - Nav links work from any route: if not on "/", navigates
+ *   home first, then scrolls to the section once mounted.
  *
  * Props:
  *   isDark   {boolean}  - for ThemeToggle
@@ -14,12 +16,12 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import logo from "../../assets/images/logo-circle.png";
 
-// ── Section IDs that exist on the page ───────────────────────
 const NAV_LINKS = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
@@ -32,7 +34,6 @@ const NAV_LINKS = [
 
 const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(1));
 
-// ── Smooth-scroll helper ──────────────────────────────────────
 function scrollTo(id) {
   const el = document.getElementById(id);
   if (el) {
@@ -44,15 +45,15 @@ export default function Navbar({ isDark, onToggle }) {
   const [pinned, setPinned] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const activeSection = useScrollSpy(SECTION_IDS);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  // ── Pin on scroll ─────────────────────────────────────────
   useEffect(() => {
     const onScroll = () => setPinned(window.scrollY > 60);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // ── Close mobile menu on resize to desktop ────────────────
   useEffect(() => {
     const onResize = () => {
       if (window.innerWidth >= 1024) setMenuOpen(false);
@@ -61,14 +62,30 @@ export default function Navbar({ isDark, onToggle }) {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  const handleNavClick = useCallback((href) => {
-    const id = href.slice(1);
-    scrollTo(id);
-    setMenuOpen(false);
-  }, []);
+  const handleNavClick = useCallback(
+    (href) => {
+      const id = href.slice(1);
+      setMenuOpen(false);
+
+      if (location.pathname !== "/") {
+        // Not on the home page (e.g. a /projects/:id detail page) —
+        // navigate home first, then wait for sections to mount
+        // before scrolling.
+        navigate("/");
+        setTimeout(() => scrollTo(id), 350);
+        return;
+      }
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => scrollTo(id));
+      });
+    },
+    [location.pathname, navigate],
+  );
 
   return (
     <motion.nav
+
       id="nav"
       initial={{ y: -24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -80,10 +97,9 @@ export default function Navbar({ isDark, onToggle }) {
           ? "py-3 border-b border-[var(--border)] backdrop-blur-[18px]"
           : "py-5 border-b border-transparent",
       ].join(" ")}
-      style={pinned ? { background: "rgba(14,12,10,0.94)" } : {}}
+      style={pinned ? { background: "var(--nav-bg)" } : {}}
     >
-      <div className="container mx-auto px-5 flex items-center justify-between">
-        {/* ── Logo ─────────────────────────────────────────── */}
+      <div className="container mx-auto px-5 max-w-7xl flex items-center justify-between">
         <a
           href="#home"
           onClick={(e) => {
@@ -102,17 +118,19 @@ export default function Navbar({ isDark, onToggle }) {
             <div className="font-display italic text-gold text-[1.05rem]">
               Sagar
             </div>
-            <div className="text-[0.58rem] tracking-[0.28em] text-sand/75 uppercase">
+            <div
+              className="text-[0.58rem] tracking-[0.28em] uppercase"
+              style={{ color: "var(--text-muted)" }}
+            >
               Timilsina
             </div>
           </div>
         </a>
 
-        {/* ── Desktop links ─────────────────────────────────── */}
         <div className="hidden lg:flex items-center gap-1">
           {NAV_LINKS.map(({ label, href }) => {
             const id = href.slice(1);
-            const isActive = activeSection === id;
+            const isActive = location.pathname === "/" && activeSection === id;
             return (
               <NavLink
                 key={id}
@@ -124,7 +142,6 @@ export default function Navbar({ isDark, onToggle }) {
             );
           })}
 
-          {/* Hire Me CTA */}
           <button
             onClick={() => handleNavClick("#contact")}
             className="btn-ink ms-3 ml-3"
@@ -144,11 +161,9 @@ export default function Navbar({ isDark, onToggle }) {
             </svg>
           </button>
 
-          {/* Theme toggle */}
           <ThemeToggle isDark={isDark} onToggle={onToggle} className="ml-2" />
         </div>
 
-        {/* ── Mobile: theme toggle + hamburger ──────────────── */}
         <div className="flex items-center gap-3 lg:hidden">
           <ThemeToggle isDark={isDark} onToggle={onToggle} />
 
@@ -167,7 +182,6 @@ export default function Navbar({ isDark, onToggle }) {
         </div>
       </div>
 
-      {/* ── Mobile dropdown menu ───────────────────────────── */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -177,12 +191,13 @@ export default function Navbar({ isDark, onToggle }) {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden border-t border-[var(--border)] lg:hidden"
-            style={{ background: "rgba(14,12,10,0.97)" }}
+            style={{ background: "var(--nav-bg-mobile)" }}
           >
             <div className="container mx-auto px-5 py-4 flex flex-col gap-1">
               {NAV_LINKS.map(({ label, href }) => {
                 const id = href.slice(1);
-                const isActive = activeSection === id;
+                const isActive =
+                  location.pathname === "/" && activeSection === id;
                 return (
                   <NavLink
                     key={id}
@@ -202,14 +217,6 @@ export default function Navbar({ isDark, onToggle }) {
   );
 }
 
-/* ──────────────────────────────────────────────────────────────
-   Sub-components
-   ────────────────────────────────────────────────────────────── */
-
-/**
- * NavLink
- * A single navigation item with gold underline reveal on hover/active.
- */
 function NavLink({ label, href, active, onClick, mobile = false }) {
   return (
     <a
@@ -222,19 +229,24 @@ function NavLink({ label, href, active, onClick, mobile = false }) {
         "relative text-[0.68rem] tracking-[0.22em] uppercase no-underline",
         "transition-colors duration-300",
         mobile ? "py-2 block" : "px-3.5 py-1.5",
-        active ? "text-gold" : "text-sand/65 hover:text-gold",
       ].join(" ")}
+      style={{
+        color: active ? "var(--gold)" : "var(--text-muted)",
+      }}
+      onMouseEnter={(e) => {
+        if (!active) e.currentTarget.style.color = "var(--gold)";
+      }}
+      onMouseLeave={(e) => {
+        if (!active) e.currentTarget.style.color = "var(--text-muted)";
+      }}
     >
       {label}
 
-      {/* Underline bar */}
       <span
         className={[
           "absolute bottom-0 left-3.5 right-3.5 h-px bg-gold",
           "transition-transform duration-350 origin-left",
-          active ? "scale-x-100" : "scale-x-0",
           mobile ? "hidden" : "",
-          "group-hover:scale-x-100",
         ].join(" ")}
         style={{
           transform: active ? "scaleX(1)" : "scaleX(0)",
@@ -245,10 +257,6 @@ function NavLink({ label, href, active, onClick, mobile = false }) {
   );
 }
 
-/**
- * Hamburger
- * Three lines → X morph animation.
- */
 function Hamburger({ open }) {
   const lineBase =
     "block w-[22px] h-px bg-gold transition-all duration-300 origin-center";

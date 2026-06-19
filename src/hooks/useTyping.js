@@ -1,33 +1,44 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from "react";
 
 export function useTyping(words, typingSpeed = 90, deletingSpeed = 45, pauseMs = 2200) {
-  const [text, setText] = useState('')
-  const [deleting, setDeleting] = useState(false)
-  const wordIndex = useRef(0)
-  const charIndex = useRef(0)
+  const [text, setText] = useState("");
+  const wordIndex = useRef(0);
+  const charIndex = useRef(0);
+  const deletingRef = useRef(false);
 
   useEffect(() => {
+    let timer;
+
     const tick = () => {
-      const word = words[wordIndex.current]
-      if (!deleting) {
-        charIndex.current++
-        setText(word.slice(0, charIndex.current))
+      const word = words[wordIndex.current % words.length];
+
+      if (!deletingRef.current) {
+        charIndex.current++;
+        setText(word.slice(0, charIndex.current));
+
         if (charIndex.current === word.length) {
-          setTimeout(() => setDeleting(true), pauseMs)
-          return
+          deletingRef.current = true;
+          timer = setTimeout(tick, pauseMs);
+          return;
         }
       } else {
-        charIndex.current--
-        setText(word.slice(0, charIndex.current))
+        charIndex.current--;
+        setText(word.slice(0, charIndex.current));
+
         if (charIndex.current === 0) {
-          setDeleting(false)
-          wordIndex.current = (wordIndex.current + 1) % words.length
+          deletingRef.current = false;
+          wordIndex.current = (wordIndex.current + 1) % words.length;
         }
       }
-    }
-    const timer = setTimeout(tick, deleting ? deletingSpeed : typingSpeed)
-    return () => clearTimeout(timer)
-  }, [text, deleting, words, typingSpeed, deletingSpeed, pauseMs])
 
-  return text
+      timer = setTimeout(tick, deletingRef.current ? deletingSpeed : typingSpeed);
+    };
+
+    timer = setTimeout(tick, typingSpeed);
+
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [words, typingSpeed, deletingSpeed, pauseMs]);
+
+  return text;
 }

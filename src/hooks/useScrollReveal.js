@@ -1,63 +1,41 @@
-// import { useEffect, useRef, useState } from 'react'
-
-// export function useScrollReveal(threshold = 0.1) {
-//   const ref = useRef(null)
-//   const [visible, setVisible] = useState(false)
-
-//   useEffect(() => {
-//     const el = ref.current
-//     if (!el) return
-//     const obs = new IntersectionObserver(
-//       ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.unobserve(el) } },
-//       { threshold }
-//     )
-//     obs.observe(el)
-//     return () => obs.disconnect()
-//   }, [threshold])
-
-//   return { ref, visible }
-// }
-
 /**
  * useScrollReveal.js
  * --------------------------------------------------
- * Watches every element with the `.reveal` class currently in
- * the DOM and adds `.in` once it scrolls into view — that class
- * triggers the fade/slide-up transition defined in global.css.
- * Each element is revealed once, then unobserved.
+ * Per-element scroll reveal hook.
+ * Attach the returned `ref` to any element — once that element
+ * scrolls into view, `visible` flips to true (one-time trigger),
+ * which the <Reveal> wrapper uses to animate opacity/transform.
  *
- * Call this once near the root of the app, after the page's
- * sections have mounted, e.g. in App.jsx:
- *
- *   import { useScrollReveal } from "./hooks/useScrollReveal";
- *
- *   export default function App() {
- *     useScrollReveal();
- *     return ( ...all your sections... );
- *   }
+ * Usage:
+ *   const { ref, visible } = useScrollReveal();
+ *   <div ref={ref} style={{ opacity: visible ? 1 : 0 }}>...</div>
  * --------------------------------------------------
  */
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export function useScrollReveal() {
+export function useScrollReveal(threshold = 0.1) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
   useEffect(() => {
-    const elements = document.querySelectorAll(".reveal");
+    const el = ref.current;
+    if (!el) return;
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("in");
-            observer.unobserve(entry.target);
-          }
-        });
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.unobserve(el);
+        }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+      { threshold }
     );
 
-    elements.forEach((el) => observer.observe(el));
+    observer.observe(el);
 
     return () => observer.disconnect();
-  }, []);
+  }, [threshold]);
+
+  return { ref, visible };
 }

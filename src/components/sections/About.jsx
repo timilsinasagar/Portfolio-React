@@ -17,36 +17,53 @@ import { Eye, Target, Gem, Download } from "lucide-react";
 /**
  * Skill bars — label + percentage shown in the left column
  */
+
 const skills = [
-  { label: "PHP / Laravel", value: 90 },
-  { label: "HTML / CSS / Bootstrap", value: 82 },
-  { label: "JavaScript / jQuery / Alpine.js", value: 75 },
-  { label: "MySQL / Database Design", value: 80 },
-  { label: "Git / REST APIs / Livewire", value: 70 },
+  { label: "PHP / Laravel", value: 95 },
+  { label: "JavaScript / React", value: 85 },
+  { label: "HTML / CSS / Bootstrap", value: 90 },
+  { label: "MySQL / Database Design", value: 88 },
+  { label: "REST APIs / Integrations", value: 90 },
+  // { label: "Linux Server Administration", value: 80 },
+  { label: "Git / Version Control", value: 85 },
 ];
 
 /**
  * Tech stack tags
  */
+/**
+ * Tech Stack
+ */
 const tags = [
   "Laravel",
   "PHP",
+  "React",
+  "Node.js",
+  "Express.js",
   "MySQL",
-  "Bootstrap 5",
+  "MongoDB",
   "JavaScript",
-  "Livewire",
-  "Alpine.js",
+  "Bootstrap 5",
+  "Tailwind CSS",
   "REST API",
   "Git",
-  "Figma",
+  "Linux",
+  "DigitalOcean",
+  "Livewire",
+  "Alpine.js",
 ];
 
 /**
  * Quick facts panel rows
  */
+/**
+ * Quick Facts
+ */
 const quickFacts = [
   { label: "Name", value: "Sagar Timilsina" },
+  { label: "Role", value: "Senior Full Stack Developer" },
   { label: "Location", value: "Pokhara, Nepal" },
+  { label: "Experience", value: "Full Stack Web Development" },
   { label: "Availability", value: "Open to Work ✓", gold: true },
   { label: "Languages", value: "Nepali, English, Hindi" },
   { label: "Freelance", value: "Available" },
@@ -104,16 +121,26 @@ export default function About() {
             <div className="gold-rule" />
 
             <p className="about-text mb-6">
-              I'm Sagar Timilsina, a full-stack web developer based in Pokhara,
-              Nepal. With a strong foundation in PHP and the Laravel framework,
-              I specialise in building robust, scalable web applications that
-              are both performant and delightful to use.
+              I'm Sagar Timilsina, a Senior Full Stack Web Developer based in
+              Pokhara, Nepal. I specialize in building scalable,
+              high-performance web applications using Laravel, PHP, and modern
+              JavaScript frameworks. My focus is on creating clean, efficient,
+              and user-centered digital solutions that solve real-world
+              problems.
             </p>
+
+            <p className="about-text mb-6">
+              I believe in writing clean and maintainable code, designing with
+              purpose, and continuously improving through learning and
+              experience. From idea to deployment, I handle development, APIs,
+              databases, and server-side architecture with equal dedication.
+            </p>
+
             <p className="about-text mb-8">
-              My philosophy is simple: write clean code, design for people, and
-              never stop learning. Whether it's a startup MVP or an enterprise
-              system, I bring the same level of craft and dedication to every
-              project.
+              <strong>"Code with Purpose Build with Passion."</strong> I turn
+              ideas into meaningful digital products that are reliable,
+              scalable, and impactful—whether it's a startup MVP, enterprise
+              system, or freelance solution.
             </p>
 
             {/* Skill bars */}
@@ -156,9 +183,10 @@ export default function About() {
                   <span className="about-panel-title">My Vision</span>
                 </div>
                 <p className="about-panel-text">
-                  To become a globally recognised developer who builds
-                  meaningful digital products that empower businesses and enrich
-                  user lives across South Asia and beyond.
+                  To become a globally impactful software engineer who builds scalable,
+                  innovative, and meaningful digital solutions that empower businesses,
+                  improve user experiences, and contribute to technological growth in Nepal
+                  and beyond.
                 </p>
               </div>
 
@@ -168,8 +196,9 @@ export default function About() {
                   Mission
                 </span>
                 <p className="about-panel-text-sm">
-                  Deliver clean, efficient, and maintainable code that solves
-                  real business challenges.
+                  To design and develop clean, secure, and scalable web applications using
+                  modern technologies like Laravel, PHP, and JavaScript while solving real
+                  business problems through efficient engineering.
                 </p>
               </div>
 
@@ -179,8 +208,8 @@ export default function About() {
                   Values
                 </span>
                 <p className="about-panel-text-sm">
-                  Integrity, continuous learning, clean architecture, user-first
-                  thinking.
+                  Integrity, continuous learning, clean architecture, user-first mindset,
+                  and commitment to delivering high-quality, maintainable software.
                 </p>
               </div>
             </div>

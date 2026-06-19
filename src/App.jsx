@@ -10,7 +10,8 @@
  *    - Custom Cursor
  *    - Navbar
  *    - Loader
- * 4. Render all website sections in order.
+ * 4. Route between the single-page Home view and
+ *    the ProjectDetail page (/projects/:id).
  *
  * Notes:
  * - Each section should have a unique id
@@ -21,6 +22,7 @@
  */
 
 import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Theme hook
 import { useTheme } from "@/hooks/useTheme";
@@ -40,6 +42,42 @@ import Portfolio from "@/components/sections/Portfolio";
 import Testimonials from "@/components/sections/Testimonials";
 import Contact from "@/components/sections/Contact";
 
+// Pages
+import ProjectDetail from "@/pages/ProjectDetail";
+
+/**
+ * HomePage
+ * ----------------------------------------
+ * Bundles all the single-page sections together.
+ * Rendered at the "/" route.
+ */
+function HomePage() {
+  return (
+    <main>
+      {/* Hero / Landing Section */}
+      <Hero />
+
+      {/* About Me Section */}
+      <About />
+
+      {/* Resume / Education / Experience */}
+      <Resume />
+
+      {/* Services Offered */}
+      <Services />
+
+      {/* Projects / Portfolio Showcase */}
+      <Portfolio />
+
+      {/* Client Reviews / Testimonials */}
+      <Testimonials />
+
+      {/* Contact Form & Information */}
+      <Contact />
+    </main>
+  );
+}
+
 export default function App() {
   /**
    * Theme State
@@ -58,7 +96,7 @@ export default function App() {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <>
+    <BrowserRouter>
       {/* =====================================
           Custom Cursor
           Visible only on desktop if configured
@@ -88,34 +126,17 @@ export default function App() {
         <Navbar isDark={isDark} onToggle={toggleTheme} />
 
         {/* =================================
-            Main Website Sections
-            Order determines page layout
+            Routes
+            "/"             -> all sections (HomePage)
+            "/projects/:id" -> single project description page
            ================================= */}
-        <main>
-          {/* Hero / Landing Section */}
-          <Hero />
-
-          {/* About Me Section */}
-          <About />
-
-          {/* Resume / Education / Experience */}
-          <Resume />
-
-          {/* Services Offered */}
-          <Services />
-
-          {/* Projects / Portfolio Showcase */}
-          <Portfolio />
-
-          {/* Client Reviews / Testimonials */}
-          <Testimonials />
-
-          {/* Contact Form & Information */}
-          <Contact />
-        </main>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/projects/:id" element={<ProjectDetail />} />
+        </Routes>
 
         <Footer />
       </div>
-    </>
+    </BrowserRouter>
   );
 }
